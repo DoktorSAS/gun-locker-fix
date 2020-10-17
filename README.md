@@ -24,7 +24,7 @@ To implement these features takes two minutes, just follow this guide carefully 
 
 ### How to add the code on my mods?
 1. Open your **not compiled** mod file with GSC Studio or other text editor
-2. Add to your **ini** function **this lines of code**
+2. Add to your **init** function **this lines of code**
 ```
  if (getDvar("mapname") == "zm_buried" && getDvar("mapname") == "zm_highrise" && getDvar("mapname") == "zm_transit") {
 		level thread onPlayerConnect_gun_locker_fix();

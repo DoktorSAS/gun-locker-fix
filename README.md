@@ -113,7 +113,7 @@ setLockerGun(  ) {
 }
 ```
 4. **Compile** the file
-5. Put the compiled file in **maps\mp\gametypes_zm\**
+5. Put the compiled file in *** maps\mp\gametypes_zm\ ***
 6. **Start** the server
 7. **Start** IW4M
 8. **END**

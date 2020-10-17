@@ -1,4 +1,4 @@
-﻿using SharedLibraryCore;
+using SharedLibraryCore;
 using SharedLibraryCore.Interfaces;
 using System;
 using System.IO;
@@ -28,7 +28,7 @@ namespace gun_locker_fix
 
         public readonly IMetaService _metaService;
 
-        public string dvar_value = "";
+        public string dvarValue = "";
 
         public Plugin(IConfigurationHandlerFactory configurationHandlerFactory, IDatabaseContextFactory databaseContextFactory, ITranslationLookup translationLookup, IMetaService metaService)
         {
@@ -43,31 +43,23 @@ namespace gun_locker_fix
                 {
                     continue;
                 }
-                long guid = S.Clients[i].NetworkId;
-                dvar_value = dvar_value + S.Clients[i].NetworkId + "," + S.Clients[i].GetAdditionalProperty<string>("locker_gun");
-                if(i < S.Clients.Count-1)
-                    dvar_value = dvar_value + "-";
+
+                dvarValue += $"{S.Clients[i].NetworkId},{S.Clients[i].GetAdditionalProperty<string>("locker_gun")}{(i < S.Clients.Count - 1 ? "-" : "")}";
             }
-            S.RconParser.SetDvarAsync(S.RemoteConnection, "guns_clients_information", dvar_value);
+            S.RconParser.SetDvarAsync(S.RemoteConnection, "guns_clients_information", dvarValue);
         }
 
-        public async void LockerGunStatus( EFClient client , string map_name)
+        public async void LockerGunStatus(EFClient client, string mapName)
         {
-            if (((await _metaService.GetPersistentMeta(map_name + "_gun", client)) == null))
+            if ((await _metaService.GetPersistentMeta($"{mapName}_gun", client)) == null)
             {
-                await _metaService.AddPersistentMeta(map_name + "_gun", "none", client);
-                Console.WriteLine("The gun is not defined");
+                await _metaService.AddPersistentMeta($"{mapName}_gun", "none", client);
             }
-            else
-            {
-                Console.WriteLine("The gun is defined and is value is " + (await _metaService.GetPersistentMeta(map_name + "_gun", client)).Value);
-            }
-                
         }
+
         public async void SetGunsDvar(Server S)
         {
             S.RconParser.SetDvarAsync(S.RemoteConnection, "guns_clients_information", "");
-            string map_name = S.CurrentMap.Name;
             string dvar = "";
             for (int i = 0; i < S.Clients.Count; i++)
             {
@@ -75,17 +67,15 @@ namespace gun_locker_fix
                 {
                     continue;
                 }
-                
-                dvar += (i > 0 ? "-" : "") + $"{S.Clients[i].NetworkId},{(await _metaService.GetPersistentMeta(map_name + "_gun", S.Clients[i])).Value}";
+
+                dvar += (i > 0 ? "-" : "") + $"{S.Clients[i].NetworkId},{(await _metaService.GetPersistentMeta($"{S.CurrentMap.Name}_gun", S.Clients[i])).Value}";
             }
             S.RconParser.SetDvarAsync(S.RemoteConnection, "guns_clients_information", dvar);
         }
         public async Task SetGunMeta(EFClient C, string value, string data_name)
         {
-            //Console.WriteLine("Client: " + C.Name );
             await _metaService.AddPersistentMeta(data_name, value, C);
         }
-
 
         public async Task OnEventAsync(GameEvent E, Server S)
         {
@@ -95,43 +85,37 @@ namespace gun_locker_fix
                 case (GameEvent.EventType.PreConnect):
                 case (GameEvent.EventType.Join):
                 case (GameEvent.EventType.MapChange):
-                    if(S.CurrentMap.Name == "zm_buried" || S.CurrentMap.Name == "zm_highrise" || S.CurrentMap.Name == "zm_transit") {
+                    if (S.CurrentMap.Name == "zm_buried" || S.CurrentMap.Name == "zm_highrise" || S.CurrentMap.Name == "zm_transit")
+                    {
                         LockerGunStatus(E.Origin, S.CurrentMap.Name);
                         SetGunsDvar(S);
                     }
-                        
-                break;
+                    break;
                 case (GameEvent.EventType.Unknown):
-   
                     if (Regex.Match(E.Data, @"IW4MLOCKER;(\d+),(.+),(\d+),(\d+),(\d+),(\d+),(\d+)").Length > 0)
                     {
-                        string[] clinet_data = E.Data.Split(';')[1].Split(',');
-                        EFClient c = S.GetClientsAsList().Find(c => c.NetworkId == Convert.ToInt64(clinet_data[0]));
-                        await SetGunMeta(c, clinet_data[1] + "," + clinet_data[2] + "," + clinet_data[3] + "," + clinet_data[4] + "," + clinet_data[5] + "," + clinet_data[6], S.CurrentMap.Name + "_gun");
-                        SetGunsDvar( S );
-                    }
-
-                    if(Regex.Match(E.Data, @"IW4MLOCKER;(\d+),none").Length > 0){
-                        string[] clinet_data = E.Data.Split(';')[1].Split(',');
-                        EFClient c = S.GetClientsAsList().Find(c => c.NetworkId == Convert.ToInt64(clinet_data[0]));
-                        await SetGunMeta(c, "none", S.CurrentMap.Name + "_gun");
+                        Console.WriteLine(E.Data);
+                        string[] clientData = E.Data.Split(';')[1].Split(',');
+                        EFClient C = S.GetClientsAsList().Find(c => c.NetworkId == Convert.ToInt64(clientData[0]));
+                        await SetGunMeta(C, String.Join(",", clientData.Skip(1)), $"{S.CurrentMap.Name}_gun");
                         SetGunsDvar(S);
                     }
-                 break;
+
+                    if (Regex.Match(E.Data, @"IW4MLOCKER;(\d+),none").Length > 0)
+                    {
+                        string[] clientData = E.Data.Split(';')[1].Split(',');
+                        EFClient C = S.GetClientsAsList().Find(c => c.NetworkId == Convert.ToInt64(clientData[0]));
+                        await SetGunMeta(C, "none", $"{S.CurrentMap.Name}_gun");
+                        SetGunsDvar(S);
+                    }
+                    break;
             }
         }
 
         public async Task OnLoadAsync(IManager manager)
         {
-
-            try { 
-                Console.WriteLine("Gun Locker Fix Plugin - Loaded Correctly");
-                Console.WriteLine($"Developed by ({Author}) \nThanks to fed for Helping");
-            }
-            catch (Exception e)
-            {
-                //Console.WriteLine($"BankFix not loaded, make sure you didn't mess up the json file: {e}");
-            }
+            Console.WriteLine("Gun Locker Fix Plugin - Loaded Correctly");
+            Console.WriteLine($"Developed by ({Author}) \nThanks to fed for Helping");
         }
 
         public Task OnTickAsync(Server S)

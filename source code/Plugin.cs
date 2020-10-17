@@ -51,7 +51,7 @@ namespace gun_locker_fix
             S.RconParser.SetDvarAsync(S.RemoteConnection, "guns_clients_information", dvar_value);
         }
 
-        public async void LcokerGunStatus( EFClient client , string map_name)
+        public async void LockerGunStatus( EFClient client , string map_name)
         {
             if (((await _metaService.GetPersistentMeta(map_name + "_gun", client)) == null))
             {
@@ -96,7 +96,7 @@ namespace gun_locker_fix
                 case (GameEvent.EventType.Join):
                 case (GameEvent.EventType.MapChange):
                     if(S.CurrentMap.Name == "zm_buried" || S.CurrentMap.Name == "zm_highrise" || S.CurrentMap.Name == "zm_transit") {
-                        LcokerGunStatus(E.Origin, S.CurrentMap.Name);
+                        LockerGunStatus(E.Origin, S.CurrentMap.Name);
                         SetGunsDvar(S);
                     }
                         

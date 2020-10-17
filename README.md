@@ -117,3 +117,13 @@ setLockerGun(  ) {
 6. **Start** the server
 7. **Start** IW4M
 8. **END**
+
+## Download
+
+Download the files from [Github](https://github.com/DoktorSAS/bank-fix)
+
+
+## Source Code
+
+Download and/or read the source files from [Github](https://github.com/DoktorSAS/bank-fix)
+

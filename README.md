@@ -19,7 +19,7 @@ To implement these features takes two minutes, just follow this guide carefully 
 
 ### How to add the the plugin to my IW4M?
 
-1. Download the [**compiled files**](https://github.com/DoktorSAS/bank-fix) and not the source code 
+1. Download the [**compiled files**](https://github.com/DoktorSAS/gun-locker-fix/releases/new) and not the source code 
 2. Take/Copy the **gun_locker_fix.dll** file and put it in the **plugins** folder of **IW4M Admin**
 
 ### How to add the code on my mods?
@@ -120,7 +120,7 @@ setLockerGun(  ) {
 
 ## Download
 
-Download the files from [Github](https://github.com/DoktorSAS/bank-fix)
+Download the files from [Github](https://github.com/DoktorSAS/gun-locker-fix/releases/new)
 
 
 ## Source Code

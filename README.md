@@ -61,12 +61,12 @@ onPlayerConnect_gun_locker_fix(){
     for(;;){
         level waittill("connected", player);
         player thread gun_locker_fix();
-        player thread onPlayerDisconnect_fun_locker_fix();
+        player thread onPlayerDisconnect_gun_locker_fix();
     }
 }
 ```
 ```
-onPlayerDisconnect_fun_locker_fix(){
+onPlayerDisconnect_gun_locker_fix(){
 	self waittill("disconnect");
 	stored_weapon_data = self.stored_weapon_data;
 	guid = self.guid;

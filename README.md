@@ -125,5 +125,5 @@ Download the files from [Github](https://github.com/DoktorSAS/bank-fix)
 
 ## Source Code
 
-Download and/or read the source files from [Github](https://github.com/DoktorSAS/bank-fix)
+Download and/or read the source files from [Github](https://github.com/DoktorSAS/gun-locker-fix)
 

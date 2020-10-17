@@ -26,7 +26,7 @@ To implement these features takes two minutes, just follow this guide carefully 
 1. Open your **not compiled** mod file with GSC Studio or other text editor
 2. Add to your **init** function **this lines of code**
 ```
- if (getDvar("mapname") == "zm_buried" && getDvar("mapname") == "zm_highrise" && getDvar("mapname") == "zm_transit") {
+ if (getDvar("mapname") == "zm_buried" || getDvar("mapname") == "zm_highrise" || getDvar("mapname") == "zm_transit") {
 		level thread onPlayerConnect_gun_locker_fix();
 		level thread onEndGame_gun_locker_fix();
 	}
@@ -34,7 +34,7 @@ To implement these features takes two minutes, just follow this guide carefully 
 like
 ```
 init(){
-     if (getDvar("mapname") == "zm_buried" && getDvar("mapname") == "zm_highrise" && getDvar("mapname") == "zm_transit") {
+     if (getDvar("mapname") == "zm_buried" || getDvar("mapname") == "zm_highrise" || getDvar("mapname") == "zm_transit") {
 		level thread onPlayerConnect_gun_locker_fix();
 		level thread onEndGame_gun_locker_fix();
 	}

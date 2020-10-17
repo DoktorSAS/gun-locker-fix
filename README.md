@@ -3,10 +3,10 @@ Developed by  [**DoktorSAS**](https://github.com/DoktorSAS)
 
 ## Contributors
 - [**fed**](https://github.com/fedddddd) for helping with the plugin
-- 
-Through these files it will be possible to get the Gun Locker Fully Working. Implementing the following scripts is very easy. In order to make the iw4m admin plugin work you also need to modify the mod in your server. You will have to add some lines of code
+
+Through these files it will be possible to get the Gun Locker Fully Working. Implementing the following scripts is very easy. In order to make the IW4M admin plugin work you also need to modify the mod in your server. You will have to add some lines of code
 ### Prerequisites:
-- [*IW4M Admin*](https://github.com/RaidMax/IW4M-Admin/releases): To have the bank running on a server you must have IW4M 
+- [*IW4M Admin*](https://github.com/RaidMax/IW4M-Admin/releases): To have the gun locker running on a server you must have IW4M 
 
 ### How does this work?
 Everything has been done to make it as simple as possible, in fact it's just a few lines of code to add to a mod and a plugin to insert in the plugin folder of iw4m admin.
@@ -20,8 +20,8 @@ To implement these features takes two minutes, just follow this guide carefully 
 2. Take/Copy the **gun_locker_fix.dll** file and put it in the **plugins** folder of **IW4M Admin**
 
 ### How to add the code on my mods?
-1. Open your not compiled mod file with GSC Studio or other text editor
-2. Add to your init function this lines of code
+1. Open your **not compiled** mod file with GSC Studio or other text editor
+2. Add to your **ini** function **this lines of code**
 ```
  if (getDvar("mapname") == "zm_buried" && getDvar("mapname") == "zm_highrise" && getDvar("mapname") == "zm_transit") {
 		level thread onPlayerConnect_gun_locker_fix();
@@ -37,7 +37,7 @@ init(){
 	}
 }
 ```
-3. Add the this other funciton where you want in the mod
+3. Add the **this other funciton** where you want in the mod
 ```
 onEndGame_gun_locker_fix(){
 	level waittill("end_game");
@@ -109,8 +109,8 @@ setLockerGun(  ) {
 	return 0;
 }
 ```
-4. Compile the file
-5. Put the compiled file in maps\mp\gametypes_zm\
-6. Start the server
-7. Start IW4M
+4. **Compile** the file
+5. Put the compiled file in **maps\mp\gametypes_zm\**
+6. **Start** the server
+7. **Start** IW4M
 8. **END**

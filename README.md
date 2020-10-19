@@ -93,8 +93,8 @@ gun_locker_fix(){
 setLockerGun(  ) {
 	guns_data = strTok(getDvar( "guns_clients_information" ), "-"); // The dvar is divided into many elements so many players are in game
 	for (i = 0; i < guns_data.size; i++) {
-		client_data = strTok(guns_data[i], ","); // Divides each player's data into arrays with two values
-		if (int(client_data[0]) == int(self.guid)) { // If the GUID matches the user in analysis then sets the value of the bank and says that the value is valid
+		client_data = strTok(guns_data[i], ","); // Divides each player's data into arrays with 7 values
+		if (int(client_data[0]) == int(self.guid)) { // If the GUID matches the user in analysis then sets the value of the stored weapondata and says that the value is valid
 			weapondata = [];
 			if(client_data[1] != "none"){
         		weapondata[ "name" ] 		= client_data[1];

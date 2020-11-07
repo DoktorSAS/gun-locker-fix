@@ -20,7 +20,7 @@ namespace gun_locker_fix
 {
     public class Plugin : IPlugin
     {
-        public string Name => "Gun Locker Fix";
+        public string Name => "Gun Locker Fix v1.0";
 
         public float Version => (float)Utilities.GetVersionAsDouble();
 
@@ -37,16 +37,24 @@ namespace gun_locker_fix
 
         public void SetGunDvar(Server S)
         {
-            for (int i = 0; i < S.Clients.Count; i++)
+            try
             {
-                if (S.Clients[i] == null)
+                for (int i = 0; i < S.Clients.Count; i++)
                 {
-                    continue;
-                }
+                    if (S.Clients[i] == null)
+                    {
+                        continue;
+                    }
 
-                dvarValue += $"{S.Clients[i].NetworkId},{S.Clients[i].GetAdditionalProperty<string>("locker_gun")}{(i < S.Clients.Count - 1 ? "-" : "")}";
+                    dvarValue += $"{S.Clients[i].NetworkId},{S.Clients[i].GetAdditionalProperty<string>("locker_gun")}{(i < S.Clients.Count - 1 ? "-" : "")}";
+                }
+                ////S.RconParser.SetDvarAsync(S.RemoteConnection, "guns_clients_information", dvarValue);
             }
-            S.RconParser.SetDvarAsync(S.RemoteConnection, "guns_clients_information", dvarValue);
+            catch (Exception e)
+            {
+
+            }
+         
         }
 
         public async void LockerGunStatus(EFClient client, string mapName)
@@ -59,18 +67,26 @@ namespace gun_locker_fix
 
         public async void SetGunsDvar(Server S)
         {
-            S.RconParser.SetDvarAsync(S.RemoteConnection, "guns_clients_information", "");
-            string dvar = "";
-            for (int i = 0; i < S.Clients.Count; i++)
+            try
             {
-                if (S.Clients[i] == null)
+                S.RconParser.SetDvarAsync(S.RemoteConnection, "guns_clients_information", "");
+                string dvar = "";
+                for (int i = 0; i < S.Clients.Count; i++)
                 {
-                    continue;
-                }
+                    if (S.Clients[i] == null)
+                    {
+                        continue;
+                    }
 
-                dvar += (i > 0 ? "-" : "") + $"{S.Clients[i].NetworkId},{(await _metaService.GetPersistentMeta($"{S.CurrentMap.Name}_gun", S.Clients[i])).Value}";
+                    dvar += (i > 0 ? "-" : "") + $"{S.Clients[i].NetworkId},{(await _metaService.GetPersistentMeta($"{S.CurrentMap.Name}_gun", S.Clients[i])).Value}";
+                }
+                S.RconParser.SetDvarAsync(S.RemoteConnection, "guns_clients_information", dvar);
             }
-            S.RconParser.SetDvarAsync(S.RemoteConnection, "guns_clients_information", dvar);
+            catch (Exception e)
+            {
+
+            }
+         
         }
         public async Task SetGunMeta(EFClient C, string value, string data_name)
         {
